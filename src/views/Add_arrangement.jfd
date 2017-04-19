@@ -1,0 +1,169 @@
+JFDML JFormDesigner: "6.0.0.0.84" Java: "1.8.0_112-release" encoding: "UTF-8"
+
+new FormModel {
+	contentType: "form/swing"
+	root: new FormRoot {
+		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class java.awt.GridBagLayout ) {
+			"$columnSpecs": "0, 0, 0"
+			"$rowSpecs": "0, 0, 0, 0, 0, 0, 0, 0, 0"
+			"$hGap": 5
+			"$vGap": 5
+			"$alignTop": true
+			"$alignLeft": true
+		} ) {
+			name: "this"
+			"resizable": false
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": "New arrangement item"
+				"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 0, false )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridwidth": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label2"
+				"text": "rooms"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label3"
+				"text": "floors"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 2
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label4"
+				"text": "furniture"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 3
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label5"
+				"text": "balcony"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 4
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label6"
+				"text": "garden"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 5
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label7"
+				"text": "pool"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 6
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label8"
+				"text": "toilets"
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 7
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "rooms_comboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "1"
+					addElement( "1" )
+					addElement( "2" )
+					addElement( "3" )
+					addElement( "4" )
+					addElement( "5" )
+					addElement( "6" )
+					addElement( "7" )
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 1
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "floors_comboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "1"
+					addElement( "1" )
+					addElement( "2" )
+					addElement( "3" )
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 2
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "furniture_comboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "with"
+					addElement( "with" )
+					addElement( "without" )
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 3
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "balcony_comboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "with"
+					addElement( "with" )
+					addElement( "without" )
+				}
+				"editable": true
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 4
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "garden_comboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "with"
+					addElement( "with" )
+					addElement( "without" )
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 5
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "pool_comboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "with"
+					addElement( "with" )
+					addElement( "without" )
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 6
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "toilets_comboBox"
+				"model": new javax.swing.DefaultComboBoxModel {
+					selectedItem: "1"
+					addElement( "1" )
+					addElement( "2" )
+				}
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 7
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "cancel_button"
+				"text": "cancel"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "cancel_buttonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridy": 8
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "add_button"
+				"text": "add"
+				addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "add_buttonActionPerformed", true ) )
+			}, new FormLayoutConstraints( class com.jformdesigner.runtime.GridBagConstraintsEx ) {
+				"gridx": 2
+				"gridy": 8
+			} )
+		}, new FormLayoutConstraints( null ) {
+			"location": new java.awt.Point( 145, 50 )
+			"size": new java.awt.Dimension( 420, 470 )
+		} )
+	}
+}
