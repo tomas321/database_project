@@ -1,6 +1,7 @@
 package models;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * Created by tomko on 27.3.2017.
@@ -11,7 +12,7 @@ public class Location {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "city")
     private String city;
@@ -19,14 +20,18 @@ public class Location {
     @Column(name = "street")
     private String street;
 
+    @OneToMany(cascade = CascadeType.REMOVE)
+    @JoinColumn(name = "location_id")
+    private Set<Estate> estates;
+
     public Location() {
     }
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 

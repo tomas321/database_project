@@ -9,9 +9,9 @@ import views.Main_window;
  * Created by tomko on 2.4.2017.
  */
 public class MainControl {
-    private static SessionFactory factory;
 
     public static void main(String[] args) {
+        SessionFactory factory;
         try {
             factory = Hibernate.getSessionFactory();
         } catch (Throwable ex) {
@@ -22,7 +22,7 @@ public class MainControl {
         Main_window window = new Main_window();
         window.setVisible(true);
         new Manage_public(window);
-        Manage_location manageLocation = new Manage_location(factory, window);
+        Manage_Location manageLocation = new Manage_Location(factory, window);
         Manage_Arrangement manageArrangement = new Manage_Arrangement(factory, window);
         Manage_Estate manageEstate = new Manage_Estate(factory, window);
         Manage_Client manageClient = new Manage_Client(factory, window);

@@ -1,6 +1,10 @@
 package models;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -12,13 +16,13 @@ public class Estate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "arrangement_id")
     private Arrangement arrangement;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -32,23 +36,23 @@ public class Estate {
     private int category;
 
     @Column(name = "build_at")
-    private String build_at;
+    private Date build_at;
 
     @Column(name = "land")
-    private int land;
+    private Integer land;
 
     @Column(name = "price")
-    private double price;
+    private Double price;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "estate_id")
     private Set<Open_house> open_houses;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -93,26 +97,31 @@ public class Estate {
     }
 
     public String getBuild_at() {
-        return build_at;
+        return build_at.toString();
     }
 
     public void setBuild_at(String build_at) {
-        this.build_at = build_at;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.build_at = format.parse(build_at);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
-    public int getLand() {
+    public Integer getLand() {
         return land;
     }
 
-    public void setLand(int land) {
+    public void setLand(Integer land) {
         this.land = land;
     }
 
-    public double getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(double price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
@@ -127,7 +136,7 @@ public class Estate {
     public String parseCategory(int category) {
         switch (category) {
             case 1:
-                return "hosue";
+                return "house";
             case 2:
                 return "flat";
             case 3:

@@ -1,6 +1,10 @@
 package models;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by tomko on 27.3.2017.
@@ -11,9 +15,9 @@ public class Sold_estate {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
-    @ManyToOne
+    @ManyToOne // dont want to delete agent on delete
     @JoinColumn(name = "agent_id")
     private Agent agent;
 
@@ -24,13 +28,13 @@ public class Sold_estate {
     private double price;
 
     @Column(name = "sold_date")
-    private String sold_date;
+    private Date sold_date;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -59,10 +63,15 @@ public class Sold_estate {
     }
 
     public String getSold_date() {
-        return sold_date;
+        return sold_date.toString();
     }
 
     public void setSold_date(String sold_date) {
-        this.sold_date = sold_date;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.sold_date = format.parse(sold_date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

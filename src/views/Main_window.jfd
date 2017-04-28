@@ -10,10 +10,8 @@ new FormModel {
 			name: "this"
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
 				name: "table_jscrollpane"
-				add( new FormComponent( "javax.swing.JList" ) {
-					name: "table_content"
-					"visibleRowCount": 100
-					addEvent( new FormEvent( "javax.swing.event.ListSelectionListener", "valueChanged", "table_contentValueChanged", true ) )
+				add( new FormComponent( "javax.swing.JTable" ) {
+					name: "content_table"
 				} )
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {

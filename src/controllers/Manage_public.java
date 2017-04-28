@@ -1,18 +1,8 @@
 package controllers;
 
-import views.Detail_window;
 import views.Main_window;
 
-import javax.swing.*;
-import javax.swing.event.ListDataListener;
-import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
-import javax.swing.text.html.HTMLDocument;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.util.Iterator;
+import java.awt.event.*;
 
 import static main.Constants.*;
 
@@ -26,9 +16,9 @@ public class Manage_public {
         this.mainWindow = mainWindow;
 
         Item_Listener itemlistener = new Item_Listener();
-        ListSelection_Listener selectionListener = new ListSelection_Listener();
+        Listener listener = new Listener();
         this.mainWindow.addTable_jcomboboxListener(itemlistener);
-        this.mainWindow.addTable_contentListener(selectionListener);
+        this.mainWindow.addDelete_buttonListener(listener);
     }
 
     private class Item_Listener implements ItemListener {
@@ -52,18 +42,18 @@ public class Manage_public {
         }
     }
 
-    private class ListSelection_Listener implements ListSelectionListener {
+    private class Listener implements ActionListener {
         @Override
-        public void valueChanged(ListSelectionEvent listSelectionEvent) {
-            Detail_window detailWindow = new Detail_window();
-            detailWindow.setVisible(true);
+        public void actionPerformed(ActionEvent actionEvent) {
 
-            detailWindow.setTable_labelText(mainWindow.getTable_jcombobox().getSelectedItem().toString());
-            detailWindow.getDetail_textArea().setText(generateTextAreaString(new String[]{"detail", "should be", "here"}));
         }
     }
 
     private String generateTextAreaString(String[] s) {
         return String.join(";\n", s);
+    }
+
+    private int extractId(String item) {
+        return 0;
     }
 }

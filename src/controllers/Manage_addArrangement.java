@@ -17,6 +17,7 @@ import java.awt.event.ActionListener;
 public class Manage_addArrangement {
     private Add_arrangement addArrangement;
     private SessionFactory factory;
+    private Integer newObjectID;
 
     public Manage_addArrangement(SessionFactory factory) {
         this.addArrangement = new Add_arrangement(); // create window object
@@ -28,11 +29,16 @@ public class Manage_addArrangement {
         this.addArrangement.addCancel_buttonListener(listener);
     }
 
+    public Manage_addArrangement(SessionFactory factory, Integer newObjectID) {
+        this.factory = factory;
+        this.newObjectID = newObjectID;
+    }
+
     private class Listener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             if (actionEvent.getSource().equals(addArrangement.getAdd_button())) {
-                addArrangement(addArrangement.getRooms_comboBox().getSelectedItem(),
+                newObjectID = addArrangement(addArrangement.getRooms_comboBox().getSelectedItem(),
                             addArrangement.getFloors_comboBox().getSelectedItem(),
                             addArrangement.getFurniture_comboBox().getSelectedItem(),
                             addArrangement.getBalcony_comboBox().getSelectedItem(),
@@ -43,6 +49,7 @@ public class Manage_addArrangement {
             }
             if (actionEvent.getSource().equals(addArrangement.getCancel_button())) {
                 addArrangement.dispose();
+                newObjectID = -1;
             }
         }
     }
@@ -75,5 +82,9 @@ public class Manage_addArrangement {
 
     public boolean parseBoolean(String input) {
         return (input.equals("with"));
+    }
+
+    public Integer getNewObjectID() {
+        return newObjectID;
     }
 }

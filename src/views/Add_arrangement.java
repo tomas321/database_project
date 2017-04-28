@@ -14,8 +14,8 @@ import javax.swing.GroupLayout;
  */
 public class Add_arrangement extends JFrame {
     public Add_arrangement() {
-        this.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
         initComponents();
+        this.setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
     }
 
     public void addCancel_buttonListener(ActionListener a) { this.cancel_button.addActionListener(a); }

@@ -1,6 +1,10 @@
 package models;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 /**
@@ -13,7 +17,7 @@ public class Agent {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "name")
     private String name;
@@ -22,24 +26,24 @@ public class Agent {
     private String phone;
 
     @Column(name = "started_at")
-    private String started_at;
+    private Date started_at;
 
     @Column(name = "rating")
     private int rating;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "agent_id")
     private Set<Sold_estate> sold_estates;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "agent_id")
     private Set<Open_house> open_houses;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -60,11 +64,16 @@ public class Agent {
     }
 
     public String getStarted_at() {
-        return started_at;
+        return started_at.toString();
     }
 
     public void setStarted_at(String started_at) {
-        this.started_at = started_at;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try {
+            this.started_at = format.parse(started_at);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getRating() {

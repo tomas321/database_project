@@ -1,6 +1,11 @@
 package models;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 /**
  * Created by tomko on 27.3.2017.
@@ -11,28 +16,28 @@ public class Open_house {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "client_id")
     private Client client;
 
-    @ManyToOne
+    @ManyToOne // dont want it to cascade to estate on delete
     @JoinColumn(name = "estate_id")
     private Estate estate;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "agent_id")
     private Agent agent;
 
     @Column(name = "time_at")
-    private String time_at;
+    private Timestamp time_at;
 
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -61,10 +66,16 @@ public class Open_house {
     }
 
     public String getTime_at() {
-        return time_at;
+        return time_at.toString();
     }
 
     public void setTime_at(String time_at) {
-        this.time_at = time_at;
+        DateFormat format = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        try {
+            Date parsedDate = format.parse(time_at);
+            this.time_at = new Timestamp(parsedDate.getTime());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
     }
 }

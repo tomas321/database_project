@@ -9,15 +9,18 @@ import sun.applet.Main;
 import java.awt.*;
 import java.awt.event.*;
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.Vector;
 import javax.swing.*;
 import javax.swing.GroupLayout;
 import javax.swing.event.*;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * @author unknown
  */
 public class Main_window extends JFrame {
-    private DefaultListModel table_content_listModel;
+    private DefaultTableModel table_content_model;
 
     public static void main(String[] args) {
         Main_window m = new Main_window();
@@ -27,13 +30,15 @@ public class Main_window extends JFrame {
     public Main_window() {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         initComponents();
+        this.content_table.removeEditor();
     }
 
     public void addTable_jcomboboxListener(ItemListener i) { this.table_jcombobox.addItemListener(i); }
-    public void addTable_contentListener(ListSelectionListener l) { this.table_content.addListSelectionListener(l); }
     public void addChoose_table_buttonListener(ActionListener a) { this.choose_table_button.addActionListener(a); }
     public void addSearch_buttonListener(ActionListener a) { this.search_button.addActionListener(a); }
     public void addAddItem_buttonListener(ActionListener a) { this.addItem_button.addActionListener(a); }
+    public void addTable_contentMouseListener(MouseAdapter m) { this.content_table.addMouseListener(m); }
+    public void addDelete_buttonListener(ActionListener a) { this.deleteItem_button.addActionListener(a); }
 
     private void table_contentValueChanged(ListSelectionEvent e) {
         // TODO add your code here
@@ -61,11 +66,16 @@ public class Main_window extends JFrame {
 
 
     private void initComponents() {
-        table_content_listModel = new DefaultListModel();
+        table_content_model = new DefaultTableModel() {
+            @Override
+            public boolean isCellEditable(int row, int column) { // restrict table editing
+                return false;
+            }
+        };
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
         // Generated using JFormDesigner Evaluation license - Tomas Bellus
         table_jscrollpane = new JScrollPane();
-        table_content = new JList(table_content_listModel);
+        content_table = new JTable(table_content_model);
         table_label = new JLabel();
         table_jcombobox = new JComboBox<>();
         choose_table_button = new JButton();
@@ -82,11 +92,7 @@ public class Main_window extends JFrame {
 
         //======== table_jscrollpane ========
         {
-
-            //---- table_content ----
-            table_content.setVisibleRowCount(100);
-            table_content.addListSelectionListener(e -> table_contentValueChanged(e));
-            table_jscrollpane.setViewportView(table_content);
+            table_jscrollpane.setViewportView(content_table);
         }
 
         //---- table_label ----
@@ -194,7 +200,7 @@ public class Main_window extends JFrame {
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     // Generated using JFormDesigner Evaluation license - Tomas Bellus
     private JScrollPane table_jscrollpane;
-    private JList table_content;
+    private JTable content_table;
     private JLabel table_label;
     private JComboBox<String> table_jcombobox;
     private JButton choose_table_button;
@@ -212,8 +218,8 @@ public class Main_window extends JFrame {
         return table_jscrollpane;
     }
 
-    public JList getTable_content() {
-        return table_content;
+    public JTable getContent_table() {
+        return content_table;
     }
 
     public JLabel getTable_label() {
@@ -240,12 +246,21 @@ public class Main_window extends JFrame {
         return deleteItem_button;
     }
 
-    public void addTable_content(Object item) {
-        this.table_content_listModel.addElement(item);
+    public void setUp_table_content(Object[] columns) {
+        if (table_content_model.getRowCount() > 0) {
+            for (int i = table_content_model.getRowCount() - 1; i > -1; i--) {
+                table_content_model.removeRow(i);
+            }
+        }
+        table_content_model.setColumnIdentifiers(columns);
     }
 
-    public DefaultListModel getTable_content_listModel() {
-        return table_content_listModel;
+    public void addItem_table_content(Object[] newRow) {
+        this.table_content_model.addRow(newRow);
+    }
+
+    public DefaultTableModel getTable_content_model() {
+        return table_content_model;
     }
 
     public JLabel getPage_label() {

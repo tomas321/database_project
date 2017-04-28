@@ -4,8 +4,8 @@ new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class org.jdesktop.layout.GroupLayout ) {
-			"$horizontalGroup": "par l {seq l {space :p:66:p, par l {comp scrollPane1::::498:x, comp table_label:::p:120:p}, space :p:109:p}}"
-			"$verticalGroup": "par l {seq l {space :p:43:p, comp table_label:::p::p, space :p:35:p, comp scrollPane1::::282:x, space :p:108:p}}"
+			"$horizontalGroup": "par l {seq l {space :p:66:p, par l {seq {comp label1:::p::p, space s:::p, comp edit_comboBox:::p::p, space s:::p, comp edit_textField:::p:114:p, space :::p, comp update_button:::p::p, space ::264:x}, seq {par l {comp scrollPane1::::498:x, comp table_label:::p:120:p}, space :p:109:p}}}}"
+			"$verticalGroup": "par l {seq t {par t {seq {space ::382:x, par b {comp edit_textField::b:p::p, comp update_button::b:p::p}}, seq {space :p:43:p, comp table_label:::p::p, space :p:35:p, comp scrollPane1::::274:x, space s:::p, par t {comp label1:::p::p, comp edit_comboBox:::p::p}}}, space :p:70:p}}"
 		} ) {
 			name: "this"
 			add( new FormContainer( "javax.swing.JScrollPane", new FormLayoutManager( class javax.swing.JScrollPane ) ) {
@@ -18,6 +18,20 @@ new FormModel {
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "table_label"
 				"text": "Table: "
+			} )
+			add( new FormComponent( "javax.swing.JLabel" ) {
+				name: "label1"
+				"text": "EDIT"
+			} )
+			add( new FormComponent( "javax.swing.JComboBox" ) {
+				name: "edit_comboBox"
+			} )
+			add( new FormComponent( "javax.swing.JTextField" ) {
+				name: "edit_textField"
+			} )
+			add( new FormComponent( "javax.swing.JButton" ) {
+				name: "update_button"
+				"text": "update"
 			} )
 		}, new FormLayoutConstraints( null ) {
 			"location": new java.awt.Point( 0, 0 )

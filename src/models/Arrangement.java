@@ -12,7 +12,7 @@ public class Arrangement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    private int id;
+    private Integer id;
 
     @Column(name = "balcony")
     private boolean balcony;
@@ -27,27 +27,23 @@ public class Arrangement {
     private boolean garden;
 
     @Column(name = "rooms")
-    private int room_count;
+    private Integer room_count;
 
     @Column(name = "toilets")
-    private int toilet_count;
+    private Integer toilet_count;
 
     @Column(name = "floors")
-    private int floor_count;
+    private Integer floor_count;
 
-    @OneToMany
+    @OneToMany(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "arrangement_id")
     private Set<Estate> estates;
 
-    @OneToMany
-    @JoinColumn(name = "location_id")
-    private Set<Location> locations;
-
-    public int getId() {
+    public Integer getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Integer id) {
         this.id = id;
     }
 
@@ -83,27 +79,27 @@ public class Arrangement {
         this.garden = garden;
     }
 
-    public int getRoom_count() {
+    public Integer getRoom_count() {
         return room_count;
     }
 
-    public void setRoom_count(int room_count) {
+    public void setRoom_count(Integer room_count) {
         this.room_count = room_count;
     }
 
-    public int getToilet_count() {
+    public Integer getToilet_count() {
         return toilet_count;
     }
 
-    public void setToilet_count(int toilet_count) {
+    public void setToilet_count(Integer toilet_count) {
         this.toilet_count = toilet_count;
     }
 
-    public int getFloor_count() {
+    public Integer getFloor_count() {
         return floor_count;
     }
 
-    public void setFloor_count(int floor_count) {
+    public void setFloor_count(Integer floor_count) {
         this.floor_count = floor_count;
     }
 
@@ -113,14 +109,6 @@ public class Arrangement {
 
     public void setEstates(Set<Estate> estates) {
         this.estates = estates;
-    }
-
-    public Set<Location> getLocations() {
-        return locations;
-    }
-
-    public void setLocations(Set<Location> locations) {
-        this.locations = locations;
     }
 
     public String getPool() {

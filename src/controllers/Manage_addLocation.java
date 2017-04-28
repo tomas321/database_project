@@ -16,9 +16,10 @@ import java.awt.event.ActionListener;
 public class Manage_addLocation {
     private Add_location addLocation;
     private SessionFactory factory;
+    private Integer newObjectID;
 
     public Manage_addLocation(SessionFactory factory) {
-        System.out.println("got in\n");
+        //System.out.println("got in\n");
         this.factory = factory;
         this.addLocation = new Add_location();
         this.addLocation.setVisible(true);
@@ -28,15 +29,22 @@ public class Manage_addLocation {
         this.addLocation.addCancel_buttonListener(listener);
     }
 
+    public Manage_addLocation(SessionFactory factory, Integer newObjectID) {
+        this.factory = factory;
+        this.newObjectID = newObjectID;
+    }
+
     private class Listener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             if (actionEvent.getSource().equals(addLocation.getAdd_button())) {
-                addLocation(addLocation.getCity_textFieldText(), addLocation.getStreet_textFieldText());
+                newObjectID = addLocation(addLocation.getCity_textFieldText(), addLocation.getStreet_textFieldText());
                 addLocation.dispose();
+                System.out.println("new id: " + newObjectID);
             }
             if (actionEvent.getSource().equals(addLocation.getCancel_button())) {
                 addLocation.dispose();
+                newObjectID = -1;
             }
         }
     }
@@ -60,5 +68,9 @@ public class Manage_addLocation {
             session.close();
         }
         return locationID;
+    }
+
+    public Integer getNewObjectID() {
+        return newObjectID;
     }
 }
