@@ -20,7 +20,7 @@ public class Location {
     @Column(name = "street")
     private String street;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany
     @JoinColumn(name = "location_id")
     private Set<Estate> estates;
 

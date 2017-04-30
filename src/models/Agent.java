@@ -31,11 +31,11 @@ public class Agent {
     @Column(name = "rating")
     private int rating;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany
     @JoinColumn(name = "agent_id")
     private Set<Sold_estate> sold_estates;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany
     @JoinColumn(name = "agent_id")
     private Set<Open_house> open_houses;
 

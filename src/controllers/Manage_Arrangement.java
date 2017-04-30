@@ -1,13 +1,11 @@
 package controllers;
 
 import models.Arrangement;
-import models.Client;
 import org.hibernate.*;
-import views.Add_arrangement;
 import views.Detail_window;
+import views.ErrorMessage;
 import views.Main_window;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -15,11 +13,10 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-import static main.Constants.INTERVAL;
 import static main.Constants.MAX_VIEW;
+import static main.Constants.VIEW_LIMIT;
 
 /**
  * Created by tomko on 11.4.2017.
@@ -39,6 +36,7 @@ public class Manage_Arrangement {
         this.mainWindow.addChoose_table_buttonListener(listener);
         this.mainWindow.addSearch_buttonListener(listener);
         this.mainWindow.addAddItem_buttonListener(listener);
+        this.mainWindow.addDelete_buttonListener(listener);
         this.mainWindow.addTable_contentMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
                 JTable table =(JTable) me.getSource();
@@ -59,14 +57,15 @@ public class Manage_Arrangement {
     }
 
     private class Listener implements ActionListener {
-        ArrayList search_list = null;
+        ArrayList arrangements = null;
         Arrangement arrangementItem = null;
         @Override
         public void actionPerformed(ActionEvent actionEvent) {
             if (actionEvent.getSource().equals(mainWindow.getChoose_table_button())) {
                 if (mainWindow.getTable_jcombobox().getSelectedItem().equals("Arrangements")) {
                     mainWindow.setUp_table_content(new Object[]{"id", "floor count", "room count", "toilet count", "balcony", "furniture", "pool", "garden"});
-                    arrangements = (ArrayList) listArrangements(); // works as a charm :)
+                    arrangements = (ArrayList) listArrangements();
+                    mainWindow.setResults_labelText(getSize());
                     max_view = (arrangements.size() <= MAX_VIEW) ? arrangements.size() : MAX_VIEW;
                     for (int i = 0; i < max_view; i++) { // display first 100 locations in the main window
                         arrangementItem = (Arrangement) arrangements.get(i);
@@ -76,11 +75,12 @@ public class Manage_Arrangement {
             }
             if (actionEvent.getSource().equals(mainWindow.getSearch_button())) {
                 if (mainWindow.getTable_jcombobox().getSelectedItem().equals("Arrangements")) {
-//                    mainWindow.getTable_content_listModel().removeAllElements(); // clear the contents
                     mainWindow.setUp_table_content(new Object[]{"id", "floor count", "room count", "toilet count", "balcony", "furniture", "pool", "garden"});
-                    search_list = (ArrayList) searchArrangements(mainWindow.getSearch_textfieldText(), (String) mainWindow.getSearch_comboboxItem());
-                    for (Iterator i = search_list.iterator(); i.hasNext(); ) {
-                        arrangementItem = (Arrangement) i.next();
+                    arrangements = (ArrayList) searchArrangements(mainWindow.getSearch_textfieldText(), (String) mainWindow.getSearch_comboboxItem());
+                    mainWindow.setResults_labelText(arrangements.size());
+                    max_view = (arrangements.size() <= VIEW_LIMIT) ? arrangements.size() : VIEW_LIMIT;
+                    for (int i = 0; i < max_view; i++) {
+                        arrangementItem = (Arrangement) arrangements.get(i);
                         mainWindow.addItem_table_content(generateItem(arrangementItem));
                     }
                 }
@@ -90,7 +90,34 @@ public class Manage_Arrangement {
                     new Manage_addArrangement(factory);
                 }
             }
+            if (actionEvent.getSource().equals(mainWindow.getDeleteItem_button())) {
+                if (mainWindow.getTable_jcombobox().getSelectedItem().equals("Arrangements")) {
+                    int index = mainWindow.getContent_table().getSelectedRow();
+                    int arrID = ((Arrangement) arrangements.get(index)).getId();
+                    deleteArrangement(arrID);
+                }
+            }
         }
+    }
+
+    public Long getSize() {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Long result = null;
+        Query query;
+        try {
+            tx = session.beginTransaction();
+            query = session.createQuery("SELECT count(id) FROM Arrangement ");
+            result = (Long) query.list().get(0);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+            new ErrorMessage(mainWindow, "get amount error");
+        } finally {
+            session.close();
+        }
+        return result;
     }
 
     public List listArrangements() {
@@ -99,6 +126,7 @@ public class Manage_Arrangement {
         this.arrangements = null;
         try {
             tx = session.beginTransaction();
+            // do whatever
             String sql_query = "FROM Arrangement a ORDER BY a.id";
             Query arrangement_query = session.createQuery(sql_query);
             arrangement_query.setMaxResults(MAX_VIEW);
@@ -118,31 +146,57 @@ public class Manage_Arrangement {
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
+            new ErrorMessage(mainWindow, "cannot connect to database");
         } finally {
             session.close();
         }
         return arrangements;
     }
 
-    public List searchArrangements(Object filter, String attribute) {
+    public void deleteArrangement(Integer arrangementID) {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        int affected = -1;
+        try{
+            tx = session.beginTransaction();
+            Query query = session.createQuery("DELETE FROM Arrangement WHERE id = :_id");
+            query.setParameter("_id", arrangementID);
+            affected = query.executeUpdate();
+            tx.commit();
+        }catch (HibernateException e) {
+            if (tx!=null) tx.rollback();
+            e.printStackTrace();
+            new ErrorMessage(mainWindow, "CANNOT DELETE\nother objects rely on this entry");
+        }finally {
+            System.out.println("[DELETE] location with id " + arrangementID + " deleted. [ROWS] rows affected: " + affected);
+            session.close();
+        }
+    }
+
+    public List searchArrangements(Object filter, Object attribute) {
         Session session = factory.openSession();
         Transaction tx = null;
         ArrayList search_result = null;
         Arrangement item;
+        Query query;
         try {
             tx = session.beginTransaction();
-            String search_query = (filter instanceof Integer) ? "FROM Arrangement WHERE " + attribute + " = " + filter:
-                                                                "FROM Arrangement WHERE " + attribute + " like " + filter;
-            Query query = session.createQuery(search_query);
+            query = session.createQuery("FROM Arrangement WHERE " + attribute + " = :_filter");
+            if (attribute.equals("id") || attribute.equals("rooms") || attribute.equals("floors") || attribute.equals("toilets"))
+                query.setParameter("_filter", Integer.parseInt((String) filter));
+            else query.setParameter("_filter", parseBoolean((String) filter));
+
             search_result = (ArrayList) query.list();
-            for (Iterator i = search_result.iterator(); i.hasNext();) {
-                item = (Arrangement) i.next();
-                System.out.println(generateItemString(item));
-            }
+//            for (Iterator i = search_result.iterator(); i.hasNext();) {
+//                item = (Arrangement) i.next();
+//                System.out.println(generateItemString(item));
+//            }
+            System.out.println("[SEARCH] search query: " + query.getQueryString());
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
+            new ErrorMessage(mainWindow, "bad filter string");
         } finally {
             session.close();
         }
@@ -150,16 +204,18 @@ public class Manage_Arrangement {
         return search_result;
     }
 
-    private Long getEstate_count(Arrangement arrangement) {
+    private long getEstate_count(Arrangement arrangement) {
         Session session = factory.openSession();
         Transaction tx = null;
-        Long result = null;
+        ArrayList result;
+        long count = 0;
         try {
             tx = session.beginTransaction();
             Query query = session.createQuery("SELECT count(e.id) FROM Arrangement a " +
                     "JOIN a.estates e WHERE a.id = :_id GROUP BY a.id");
             query.setParameter("_id", arrangement.getId());
-            result = (Long) query.list().get(0);
+            result = (ArrayList) query.list();
+            if (result.size() > 0) count = (long) result.get(0);
             tx.commit();
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
@@ -167,7 +223,7 @@ public class Manage_Arrangement {
         } finally {
             session.close();
         }
-        return result;
+        return count;
     }
 
     public int getListOffset() {
@@ -200,5 +256,11 @@ public class Manage_Arrangement {
 
     private Object[] generateItem(Arrangement a) {
         return new Object[]{a.getId(), a.getFloor_count(), a.getRoom_count(), a.getToilet_count(), a.getBalcony(), a.getFurniture(), a.getPool(), a.getGarden()};
+    }
+
+    private boolean parseBoolean(String input) {
+        if (input.equals("with") || input.equals("1") || input.equals("true")) return true;
+        else if (input.equals("without") || input.equals("0") || input.equals("false")) return false;
+        return false;
     }
 }

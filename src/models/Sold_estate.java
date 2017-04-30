@@ -17,7 +17,7 @@ public class Sold_estate {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne // dont want to delete agent on delete
+    @ManyToOne
     @JoinColumn(name = "agent_id")
     private Agent agent;
 

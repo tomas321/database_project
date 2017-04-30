@@ -35,7 +35,7 @@ public class Arrangement {
     @Column(name = "floors")
     private Integer floor_count;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany
     @JoinColumn(name = "arrangement_id")
     private Set<Estate> estates;
 

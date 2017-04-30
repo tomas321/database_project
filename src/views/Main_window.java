@@ -22,11 +22,6 @@ import javax.swing.table.DefaultTableModel;
 public class Main_window extends JFrame {
     private DefaultTableModel table_content_model;
 
-    public static void main(String[] args) {
-        Main_window m = new Main_window();
-        m.setVisible(true);
-    }
-
     public Main_window() {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         initComponents();
@@ -73,7 +68,7 @@ public class Main_window extends JFrame {
             }
         };
         // JFormDesigner - Component initialization - DO NOT MODIFY  //GEN-BEGIN:initComponents
-        // Generated using JFormDesigner Evaluation license - Tomas Bellus
+        // Generated using JFormDesigner Evaluation license - Stefan Zralok
         table_jscrollpane = new JScrollPane();
         content_table = new JTable(table_content_model);
         table_label = new JLabel();
@@ -86,6 +81,8 @@ public class Main_window extends JFrame {
         search_button = new JButton();
         addItem_button = new JButton();
         deleteItem_button = new JButton();
+        results_label = new JLabel();
+        label1 = new JLabel();
 
         //======== this ========
         Container contentPane = getContentPane();
@@ -100,6 +97,7 @@ public class Main_window extends JFrame {
 
         //---- table_jcombobox ----
         table_jcombobox.setModel(new DefaultComboBoxModel<>(new String[] {
+            "<select>",
             "Estates",
             "Locations",
             "Arrangements",
@@ -132,6 +130,12 @@ public class Main_window extends JFrame {
         deleteItem_button.setText("delete");
         deleteItem_button.addActionListener(e -> deleteItem_buttonActionPerformed(e));
 
+        //---- results_label ----
+        results_label.setText("number of records: ");
+
+        //---- label1 ----
+        label1.setText("date format e.g. 2009-09-12");
+
         GroupLayout contentPaneLayout = new GroupLayout(contentPane);
         contentPane.setLayout(contentPaneLayout);
         contentPaneLayout.setHorizontalGroup(
@@ -154,15 +158,19 @@ public class Main_window extends JFrame {
                                 .addGroup(contentPaneLayout.createSequentialGroup()
                                     .addComponent(search_combobox, GroupLayout.PREFERRED_SIZE, 107, GroupLayout.PREFERRED_SIZE)
                                     .addGap(18, 18, 18)
-                                    .addComponent(search_button)))
-                            .addGap(0, 347, Short.MAX_VALUE)))
+                                    .addComponent(search_button)
+                                    .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
+                                    .addComponent(label1)))
+                            .addGap(0, 150, Short.MAX_VALUE)))
                     .addGap(85, 85, 85))
                 .addGroup(contentPaneLayout.createSequentialGroup()
                     .addGap(288, 288, 288)
                     .addComponent(page_label, GroupLayout.PREFERRED_SIZE, 100, GroupLayout.PREFERRED_SIZE)
                     .addContainerGap(GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGroup(GroupLayout.Alignment.TRAILING, contentPaneLayout.createSequentialGroup()
-                    .addContainerGap(683, Short.MAX_VALUE)
+                    .addGap(94, 94, 94)
+                    .addComponent(results_label)
+                    .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED, 455, Short.MAX_VALUE)
                     .addComponent(addItem_button)
                     .addGap(18, 18, 18)
                     .addComponent(deleteItem_button, GroupLayout.PREFERRED_SIZE, 86, GroupLayout.PREFERRED_SIZE)
@@ -177,11 +185,12 @@ public class Main_window extends JFrame {
                         .addComponent(table_jcombobox)
                         .addComponent(choose_table_button, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
                     .addGap(12, 12, 12)
-                    .addGroup(contentPaneLayout.createParallelGroup()
-                        .addComponent(search_textfield, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(search_label, GroupLayout.Alignment.TRAILING)
-                        .addComponent(search_combobox, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-                        .addComponent(search_button, GroupLayout.Alignment.TRAILING, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE))
+                    .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.TRAILING, false)
+                        .addComponent(search_textfield, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(search_label)
+                        .addComponent(search_combobox)
+                        .addComponent(search_button, GroupLayout.PREFERRED_SIZE, 28, GroupLayout.PREFERRED_SIZE)
+                        .addComponent(label1, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addGap(8, 8, 8)
                     .addComponent(table_jscrollpane, GroupLayout.DEFAULT_SIZE, 360, Short.MAX_VALUE)
                     .addPreferredGap(LayoutStyle.ComponentPlacement.RELATED)
@@ -189,7 +198,8 @@ public class Main_window extends JFrame {
                     .addPreferredGap(LayoutStyle.ComponentPlacement.UNRELATED)
                     .addGroup(contentPaneLayout.createParallelGroup(GroupLayout.Alignment.BASELINE)
                         .addComponent(deleteItem_button)
-                        .addComponent(addItem_button))
+                        .addComponent(addItem_button)
+                        .addComponent(results_label))
                     .addGap(84, 84, 84))
         );
         pack();
@@ -198,7 +208,7 @@ public class Main_window extends JFrame {
     }
 
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    // Generated using JFormDesigner Evaluation license - Tomas Bellus
+    // Generated using JFormDesigner Evaluation license - Stefan Zralok
     private JScrollPane table_jscrollpane;
     private JTable content_table;
     private JLabel table_label;
@@ -211,6 +221,8 @@ public class Main_window extends JFrame {
     private JButton search_button;
     private JButton addItem_button;
     private JButton deleteItem_button;
+    private JLabel results_label;
+    private JLabel label1;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
 
 
@@ -284,5 +296,9 @@ public class Main_window extends JFrame {
         for (int i = 0; i < list.length; i++) {
             this.search_combobox.addItem(list[i]);
         }
+    }
+
+    public void setResults_labelText(Object number) {
+        this.results_label.setText("number of records: "  + number);
     }
 }

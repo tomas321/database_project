@@ -3,6 +3,7 @@ package controllers;
 import models.Client;
 import org.hibernate.*;
 import views.Detail_window;
+import views.ErrorMessage;
 import views.Main_window;
 
 import javax.swing.*;
@@ -16,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import static main.Constants.MAX_VIEW;
+import static main.Constants.VIEW_LIMIT;
 
 /**
  * Created by tomko on 18.4.2017.
@@ -32,7 +34,7 @@ public class Manage_Client {
         Listener listener = new Listener();
         this.mainWindow.addChoose_table_buttonListener(listener);
         this.mainWindow.addAddItem_buttonListener(listener);
-        //this.mainWindow.addDelete_buttonListener(listener);
+        this.mainWindow.addDelete_buttonListener(listener);
         this.mainWindow.addSearch_buttonListener(listener);
         this.mainWindow.addTable_contentMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent me) {
@@ -55,7 +57,7 @@ public class Manage_Client {
 
     private class Listener implements ActionListener {
         Client clientItem = null;
-        ArrayList search_list;
+        ArrayList clients = null;
         int max_view;
         @Override
         public void actionPerformed(ActionEvent a) {
@@ -63,8 +65,9 @@ public class Manage_Client {
                 if (mainWindow.getTable_jcombobox().getSelectedItem().equals("Clients")) {
                     mainWindow.setUp_table_content(new Object[]{"id", "name", "phone", "e-mail"});
                     clients = (ArrayList) listClients(); // works as a charm :)
+                    mainWindow.setResults_labelText(getSize());
                     max_view = (clients.size() <= MAX_VIEW) ? clients.size() : MAX_VIEW;
-                    for (int i = 0; i < MAX_VIEW; i++) { // display first 100 locations in the main window
+                    for (int i = 0; i < max_view; i++) { // display first 100 locations in the main window
                         clientItem = (Client) clients.get(i);
                         mainWindow.addItem_table_content(generateItem(clientItem));
                     }
@@ -79,21 +82,42 @@ public class Manage_Client {
                 if (mainWindow.getTable_jcombobox().getSelectedItem().equals("Clients")) {
                     int index = mainWindow.getContent_table().getSelectedRow();
                     int client_id = ((Client) clients.get(index)).getId();
-                    //deleteClient(client_id);
-                    System.out.println(client_id);
+                    deleteClient(client_id);
                 }
             }
             if (a.getSource().equals(mainWindow.getSearch_button())) {
                 if (mainWindow.getTable_jcombobox().getSelectedItem().equals("Clients")) {
                     mainWindow.setUp_table_content(new Object[]{"id", "name", "phone", "e-mail"});
-                    search_list = (ArrayList) searchClients(mainWindow.getSearch_textfieldText(), mainWindow.getSearch_comboboxItem());
-                    for (Iterator i = search_list.iterator(); i.hasNext(); ) {
-                        clientItem = (Client) i.next();
+                    clients = (ArrayList) searchClients(mainWindow.getSearch_textfieldText(), mainWindow.getSearch_comboboxItem());
+                    mainWindow.setResults_labelText(clients.size());
+                    max_view = (clients.size() <= VIEW_LIMIT) ? clients.size() : VIEW_LIMIT;
+                    for (int i = 0; i < max_view; i++) {
+                        clientItem = (Client) clients.get(i);
                         mainWindow.addItem_table_content(generateItem(clientItem));
                     }
                 }
             }
         }
+    }
+
+    public Long getSize() {
+        Session session = factory.openSession();
+        Transaction tx = null;
+        Long result = null;
+        Query query;
+        try {
+            tx = session.beginTransaction();
+            query = session.createQuery("SELECT count(id) FROM Client");
+            result = (Long) query.list().get(0);
+            tx.commit();
+        } catch (HibernateException e) {
+            if (tx != null) tx.rollback();
+            e.printStackTrace();
+            new ErrorMessage(mainWindow, "get amount error");
+        } finally {
+            session.close();
+        }
+        return result;
     }
 
     public List listClients() {
@@ -115,6 +139,7 @@ public class Manage_Client {
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
+            new ErrorMessage(mainWindow, "cannot connect to database");
         } finally {
             session.close();
         }
@@ -124,16 +149,19 @@ public class Manage_Client {
     public void deleteClient(Integer clientID){
         Session session = factory.openSession();
         Transaction tx = null;
+        int affected = -1;
         try{
             tx = session.beginTransaction();
-            Client client = (Client) session.get(Client.class, clientID);
-            session.delete(client);
+            Query query = session.createQuery("DELETE FROM Client WHERE id = :_id");
+            query.setParameter("_id", clientID);
+            affected = query.executeUpdate();
             tx.commit();
         }catch (HibernateException e) {
             if (tx!=null) tx.rollback();
             e.printStackTrace();
+            new ErrorMessage(mainWindow, "CANNOT DELETE\nother objects rely on this entry");
         }finally {
-            System.out.println("[DELETE] client with id " + clientID + " deleted.");
+            System.out.println("[DELETE] client with id " + clientID + " deleted. [ROWS] rows affected: " + affected);
             session.close();
         }
     }
@@ -158,7 +186,7 @@ public class Manage_Client {
             }
             System.out.println("[SEARCH] query: " + search_query);
             search_result = (ArrayList) query.list();
-            System.out.println("list size: " + search_result.size());
+            //System.out.println("list size: " + search_result.size());
             for (Iterator i = search_result.iterator(); i.hasNext();) {
                 item = (Client) i.next();
                 System.out.println(generateItemString(item));
@@ -167,6 +195,7 @@ public class Manage_Client {
         } catch (HibernateException e) {
             if (tx != null) tx.rollback();
             e.printStackTrace();
+            new ErrorMessage(mainWindow, "bad filter string");
         } finally {
             session.close();
         }
@@ -204,7 +233,7 @@ public class Manage_Client {
         return count;
     }
 
-    private String generateItemString(Client client, long num_of_openHouses) {
+    private String generateItemString(Client client, Object num_of_openHouses) {
         return "id: " + client.getId() + "\n" +
                 "name: " + client.getName() + "\n" +
                 "phone: " + client.getPhone() + "\n" +

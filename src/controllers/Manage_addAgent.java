@@ -1,7 +1,6 @@
 package controllers;
 
 import models.Agent;
-import models.Estate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;

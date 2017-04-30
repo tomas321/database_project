@@ -8,18 +8,9 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import views.Add_estate;
-import views.Add_location;
-import views.ErrorMessage;
 
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.geom.Arc2D;
-import java.awt.geom.CubicCurve2D;
 import java.util.List;
 
 /**

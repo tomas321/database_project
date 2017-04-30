@@ -6,7 +6,6 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import views.Add_arrangement;
-import views.Main_window;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -80,11 +79,7 @@ public class Manage_addArrangement {
         return arrangementID;
     }
 
-    public boolean parseBoolean(String input) {
+    private boolean parseBoolean(String input) {
         return (input.equals("with"));
-    }
-
-    public Integer getNewObjectID() {
-        return newObjectID;
     }
 }

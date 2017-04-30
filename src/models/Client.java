@@ -23,7 +23,7 @@ public class Client {
     @Column(name = "email")
     private String email;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany
     @JoinColumn(name = "client_id")
     private Set<Open_house> open_houses;
 

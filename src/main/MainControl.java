@@ -22,15 +22,12 @@ public class MainControl {
         Main_window window = new Main_window();
         window.setVisible(true);
         new Manage_public(window);
-        Manage_Location manageLocation = new Manage_Location(factory, window);
-        Manage_Arrangement manageArrangement = new Manage_Arrangement(factory, window);
-        Manage_Estate manageEstate = new Manage_Estate(factory, window);
-        Manage_Client manageClient = new Manage_Client(factory, window);
-        Manage_OpenHouse manageOpenHouse = new Manage_OpenHouse(factory, window);
-        Manage_Agent manageAgent = new Manage_Agent(factory, window);
-        Manage_SoldEstate manageSoldEstate = new Manage_SoldEstate(factory, window);
-
-//        Integer locID1 = manageLocation.addLocation("Banska Bystrica", "Hviezdoslavova ulica");
-//        Integer locID2 = manageLocation.addLocation("Banska Bystrica", "Chorcheho");
+        new Manage_Location(factory, window);
+        new Manage_Arrangement(factory, window);
+        new Manage_Estate(factory, window);
+        new Manage_Client(factory, window);
+        new Manage_OpenHouse(factory, window);
+        new Manage_Agent(factory, window);
+        new Manage_SoldEstate(factory, window);
     }
 }

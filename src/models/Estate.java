@@ -18,11 +18,11 @@ public class Estate {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "arrangement_id")
     private Arrangement arrangement;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "location_id")
     private Location location;
 
@@ -44,7 +44,7 @@ public class Estate {
     @Column(name = "price")
     private Double price;
 
-    @OneToMany(cascade = CascadeType.REMOVE)
+    @OneToMany
     @JoinColumn(name = "estate_id")
     private Set<Open_house> open_houses;
 

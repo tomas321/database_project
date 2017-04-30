@@ -18,15 +18,6 @@ public class Manage_detail {
     private SessionFactory factory;
     private Integer itemId;
 
-    /** the current state is
-     * update works
-     * select works
-     * search by in client works
-     * delete doesnt work
-     * insert works
-     * detail + edit works
-     */
-
     public Manage_detail(SessionFactory factory, Detail_window detailWindow, Integer item_id) {
         this.detailWindow = detailWindow;
         this.factory = factory;

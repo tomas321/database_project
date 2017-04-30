@@ -18,7 +18,7 @@ public class Open_house {
     @Column(name = "id")
     private Integer id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "client_id")
     private Client client;
 
@@ -26,7 +26,7 @@ public class Open_house {
     @JoinColumn(name = "estate_id")
     private Estate estate;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne
     @JoinColumn(name = "agent_id")
     private Agent agent;
 

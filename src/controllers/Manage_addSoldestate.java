@@ -1,7 +1,6 @@
 package controllers;
 
 import models.Agent;
-import models.Client;
 import models.Sold_estate;
 import org.hibernate.*;
 import views.Add_soldestate;
