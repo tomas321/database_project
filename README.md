@@ -1,6 +1,3 @@
-# dbs2017-project-tomas321
+# PostgeSQL database java project
 
-Tomáš Belluš
-2. ročník IT_3
-Databázové systémy 2017 LS
-FIIT - STU
+using Hibernate framework. incldues all sql files for creating working database in postgres.
